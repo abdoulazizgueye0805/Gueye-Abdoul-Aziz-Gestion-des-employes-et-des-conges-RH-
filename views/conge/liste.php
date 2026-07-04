@@ -12,7 +12,10 @@ require __DIR__ . '/../partials/header.php';
 
 <h2>Congés</h2>
 
-<a class="btn" href="index.php?module=conge&action=ajouter">+ Soumettre une demande de congé</a>
+<a class="btn" href="index.php?module=conge&action=ajouter">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+    Soumettre une demande de congé
+</a>
 
 <!-- Formulaire de filtres : chaque select se soumet automatiquement au changement
      (onchange="this.form.submit()"), pas besoin de bouton "Filtrer". -->
@@ -71,12 +74,24 @@ require __DIR__ . '/../partials/header.php';
             <td class="actions">
                 <!-- Valider/Refuser ne sont proposes que si la demande est encore en attente -->
                 <?php if ($conge->getStatut() === 'en_attente'): ?>
-                <a href="index.php?module=conge&action=valider&id=<?= $conge->getId() ?>">Valider</a>
-                <a href="index.php?module=conge&action=refuser&id=<?= $conge->getId() ?>">Refuser</a>
+                <a href="index.php?module=conge&action=valider&id=<?= $conge->getId() ?>">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                    Valider
+                </a>
+                <a class="action-supprimer" href="index.php?module=conge&action=refuser&id=<?= $conge->getId() ?>">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="M6 6l12 12"></path></svg>
+                    Refuser
+                </a>
                 <?php endif; ?>
-                <a href="index.php?module=conge&action=modifier&id=<?= $conge->getId() ?>">Modifier</a>
-                <a href="index.php?module=conge&action=supprimer&id=<?= $conge->getId() ?>"
-                   onclick="return confirm('Supprimer cette demande de conge ?');">Supprimer</a>
+                <a href="index.php?module=conge&action=modifier&id=<?= $conge->getId() ?>">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                    Modifier
+                </a>
+                <a class="action-supprimer" href="index.php?module=conge&action=supprimer&id=<?= $conge->getId() ?>"
+                   onclick="return confirm('Supprimer cette demande de conge ?');">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
+                    Supprimer
+                </a>
             </td>
         </tr>
         <?php endforeach; ?>
