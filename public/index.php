@@ -23,6 +23,14 @@ function validerPeriodeConge(string $dateDebut, string $dateFin): ?string
     return null;
 }
 
+function calculerNombreJours(string $dateDebut, string $dateFin): int
+{
+    $debut = new DateTime($dateDebut);
+    $fin = new DateTime($dateFin);
+
+    return $debut->diff($fin)->days + 1;
+}
+
 $database = new Database();
 $departementManager = new DepartementManager($database);
 $employeManager = new EmployeManager($database);
@@ -81,7 +89,8 @@ if ($module === 'employe') {
                     $_POST['nom'],
                     $_POST['poste'],
                     $_POST['email'],
-                    (int) $_POST['departement_id']
+                    (int) $_POST['departement_id'],
+                    (int) $_POST['solde_conges']
                 );
                 $employeManager->ajouter($employe);
                 header('Location: index.php?module=employe&action=liste');
@@ -99,6 +108,7 @@ if ($module === 'employe') {
                     $_POST['poste'],
                     $_POST['email'],
                     (int) $_POST['departement_id'],
+                    (int) $_POST['solde_conges'],
                     $id
                 );
                 $employeManager->modifier($employe);
@@ -188,7 +198,18 @@ if ($module === 'conge') {
             break;
 
         case 'valider':
-            $congeManager->changerStatut((int) $_GET['id'], 'valide');
+            $conge = $congeManager->trouverParId((int) $_GET['id']);
+            $employe = $employeManager->trouverParId($conge->getEmployeId());
+            $nombreJours = calculerNombreJours($conge->getDateDebut(), $conge->getDateFin());
+
+            if ($employe->getSoldeConges() < $nombreJours) {
+                header('Location: index.php?module=conge&action=liste&erreur=solde_insuffisant');
+                exit;
+            }
+
+            $employe->setSoldeConges($employe->getSoldeConges() - $nombreJours);
+            $employeManager->modifier($employe);
+            $congeManager->changerStatut($conge->getId(), 'valide');
             header('Location: index.php?module=conge&action=liste');
             exit;
 
@@ -198,7 +219,16 @@ if ($module === 'conge') {
             exit;
 
         case 'supprimer':
-            $congeManager->supprimer((int) $_GET['id']);
+            $conge = $congeManager->trouverParId((int) $_GET['id']);
+
+            if ($conge->getStatut() === 'valide') {
+                $employe = $employeManager->trouverParId($conge->getEmployeId());
+                $nombreJours = calculerNombreJours($conge->getDateDebut(), $conge->getDateFin());
+                $employe->setSoldeConges($employe->getSoldeConges() + $nombreJours);
+                $employeManager->modifier($employe);
+            }
+
+            $congeManager->supprimer($conge->getId());
             header('Location: index.php?module=conge&action=liste');
             exit;
 

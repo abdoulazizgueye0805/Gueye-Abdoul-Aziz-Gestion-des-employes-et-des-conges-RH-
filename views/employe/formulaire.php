@@ -25,6 +25,10 @@
         <?php endforeach; ?>
     </select>
 
+    <label for="solde_conges">Solde de congés (jours)</label>
+    <input type="number" id="solde_conges" name="solde_conges" min="0" required
+           value="<?= isset($employe) ? $employe->getSoldeConges() : 30 ?>">
+
     <button class="btn" type="submit">Enregistrer</button>
 </form>
 

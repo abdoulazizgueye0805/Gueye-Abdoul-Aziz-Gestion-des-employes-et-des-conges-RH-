@@ -7,18 +7,21 @@ class Employe
     private string $poste;
     private string $email;
     private int $departementId;
+    private int $soldeConges;
 
     public function __construct(
         string $nom,
         string $poste,
         string $email,
         int $departementId,
+        int $soldeConges = 30,
         ?int $id = null
     ) {
         $this->nom = $nom;
         $this->poste = $poste;
         $this->email = $email;
         $this->departementId = $departementId;
+        $this->soldeConges = $soldeConges;
         $this->id = $id;
     }
 
@@ -70,5 +73,15 @@ class Employe
     public function setDepartementId(int $departementId): void
     {
         $this->departementId = $departementId;
+    }
+
+    public function getSoldeConges(): int
+    {
+        return $this->soldeConges;
+    }
+
+    public function setSoldeConges(int $soldeConges): void
+    {
+        $this->soldeConges = $soldeConges;
     }
 }

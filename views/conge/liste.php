@@ -2,6 +2,10 @@
 
 <h2>Congés</h2>
 
+<?php if (($_GET['erreur'] ?? '') === 'solde_insuffisant'): ?>
+<p style="color:#b91c1c; font-weight:600;">Impossible de valider : l'employé n'a pas assez de jours de congés disponibles.</p>
+<?php endif; ?>
+
 <a class="btn" href="index.php?module=conge&action=ajouter">+ Soumettre une demande de congé</a>
 
 <form method="get" action="index.php" style="display:flex; gap:16px; align-items:end; max-width:none;">
@@ -56,8 +60,8 @@
                 <?php if ($conge->getStatut() === 'en_attente'): ?>
                 <a href="index.php?module=conge&action=valider&id=<?= $conge->getId() ?>">Valider</a>
                 <a href="index.php?module=conge&action=refuser&id=<?= $conge->getId() ?>">Refuser</a>
-                <?php endif; ?>
                 <a href="index.php?module=conge&action=modifier&id=<?= $conge->getId() ?>">Modifier</a>
+                <?php endif; ?>
                 <a href="index.php?module=conge&action=supprimer&id=<?= $conge->getId() ?>"
                    onclick="return confirm('Supprimer cette demande de conge ?');">Supprimer</a>
             </td>
