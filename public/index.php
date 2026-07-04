@@ -8,6 +8,21 @@ require_once __DIR__ . '/../classes/EmployeManager.php';
 require_once __DIR__ . '/../classes/Conge.php';
 require_once __DIR__ . '/../classes/CongeManager.php';
 
+function validerPeriodeConge(string $dateDebut, string $dateFin): ?string
+{
+    $aujourdHui = date('Y-m-d');
+
+    if ($dateDebut < $aujourdHui) {
+        return "La date de début ne peut pas être une date passée.";
+    }
+
+    if ($dateFin < $dateDebut) {
+        return "La date de fin doit être postérieure ou égale à la date de début.";
+    }
+
+    return null;
+}
+
 $database = new Database();
 $departementManager = new DepartementManager($database);
 $employeManager = new EmployeManager($database);
@@ -118,6 +133,9 @@ if ($module === 'conge') {
 
     switch ($action) {
         case 'ajouter':
+            $formAction = 'ajouter';
+            $estModification = false;
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $conge = new Conge(
                     (int) $_POST['employe_id'],
@@ -125,28 +143,43 @@ if ($module === 'conge') {
                     $_POST['date_debut'],
                     $_POST['date_fin']
                 );
-                $congeManager->ajouter($conge);
-                header('Location: index.php?module=conge&action=liste');
-                exit;
+                $erreur = validerPeriodeConge($_POST['date_debut'], $_POST['date_fin']);
+
+                if ($erreur === null) {
+                    $congeManager->ajouter($conge);
+                    header('Location: index.php?module=conge&action=liste');
+                    exit;
+                }
             }
+
             require __DIR__ . '/../views/conge/formulaire.php';
             break;
 
         case 'modifier':
             $id = (int) $_GET['id'];
+            $formAction = 'modifier&id=' . $id;
+            $estModification = true;
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $conge = new Conge(
+                    (int) $_POST['employe_id'],
+                    $_POST['type'],
+                    $_POST['date_debut'],
+                    $_POST['date_fin'],
+                    $congeManager->trouverParId($id)->getStatut(),
+                    $id
+                );
+                $erreur = validerPeriodeConge($_POST['date_debut'], $_POST['date_fin']);
+
+                if ($erreur === null) {
+                    $congeManager->modifier($conge);
+                    header('Location: index.php?module=conge&action=liste');
+                    exit;
+                }
+            } else {
                 $conge = $congeManager->trouverParId($id);
-                $conge->setEmployeId((int) $_POST['employe_id']);
-                $conge->setType($_POST['type']);
-                $conge->setDateDebut($_POST['date_debut']);
-                $conge->setDateFin($_POST['date_fin']);
-                $congeManager->modifier($conge);
-                header('Location: index.php?module=conge&action=liste');
-                exit;
             }
 
-            $conge = $congeManager->trouverParId($id);
             require __DIR__ . '/../views/conge/formulaire.php';
             break;
 
