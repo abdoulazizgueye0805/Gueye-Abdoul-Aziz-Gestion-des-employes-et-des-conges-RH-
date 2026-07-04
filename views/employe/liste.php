@@ -34,7 +34,6 @@ require __DIR__ . '/../partials/header.php';
             <th>Poste</th>
             <th>Email</th>
             <th>Département</th>
-            <th>Solde congés</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -46,7 +45,6 @@ require __DIR__ . '/../partials/header.php';
             <td><?= htmlspecialchars($employe->getPoste()) ?></td>
             <td><?= htmlspecialchars($employe->getEmail()) ?></td>
             <td><?= htmlspecialchars($departementsParId[$employe->getDepartementId()] ?? '—') ?></td>
-            <td><?= $employe->getSoldeConges() ?> j.</td>
             <td class="actions">
                 <a href="index.php?module=employe&action=modifier&id=<?= $employe->getId() ?>">Modifier</a>
                 <a href="index.php?module=employe&action=supprimer&id=<?= $employe->getId() ?>"
@@ -56,7 +54,7 @@ require __DIR__ . '/../partials/header.php';
         <?php endforeach; ?>
         <?php if (empty($employes)): ?>
         <tr>
-            <td colspan="7">Aucun employé enregistré pour le moment.</td>
+            <td colspan="6">Aucun employé enregistré pour le moment.</td>
         </tr>
         <?php endif; ?>
     </tbody>

@@ -15,19 +15,14 @@ Une entreprise souhaite gérer ses employés (nom, poste, département, email) e
 - [x] Validation ou refus d'un congé
 - [x] Liste des congés par employé ou par statut
 - [x] Recherche (employés, par nom, poste ou email)
-- [x] Suivi du solde de congés par employé (décrémenté à la validation)
 
 ## Modèle de données
 
-- **Employe** : nom, poste, département, email, solde de congés (jours restants)
+- **Employe** : nom, poste, département, email
 - **Departement** : nom
 - **Conge** : employé, type, date début, date fin, statut
 
 Relations : un département a plusieurs employés, un employé a plusieurs congés.
-
-### Règle métier : solde de congés
-
-Chaque employé a un solde de congés (30 jours par défaut, modifiable). Quand une demande de congé est **validée**, le nombre de jours de la période est automatiquement déduit du solde de l'employé. Si le solde est insuffisant, la validation est refusée avec un message d'erreur. Si un congé validé est supprimé, ses jours sont restitués à l'employé. Pour cette raison, un congé déjà validé ou refusé ne peut plus être modifié (seuls les congés en attente le peuvent), afin de garder le solde toujours cohérent.
 
 ## Structure du projet
 

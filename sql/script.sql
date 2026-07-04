@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS employe (
     poste VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     departement_id INT NOT NULL,
-    solde_conges INT NOT NULL DEFAULT 30,
     CONSTRAINT fk_employe_departement
         FOREIGN KEY (departement_id) REFERENCES departement(id_departement)
         ON DELETE RESTRICT

@@ -15,8 +15,8 @@ class EmployeManager
     public function ajouter(Employe $employe): bool
     {
         $requete = $this->pdo->prepare(
-            "INSERT INTO employe (nom, poste, email, departement_id, solde_conges)
-             VALUES (:nom, :poste, :email, :departement_id, :solde_conges)"
+            "INSERT INTO employe (nom, poste, email, departement_id)
+             VALUES (:nom, :poste, :email, :departement_id)"
         );
 
         return $requete->execute([
@@ -24,7 +24,6 @@ class EmployeManager
             'poste' => $employe->getPoste(),
             'email' => $employe->getEmail(),
             'departement_id' => $employe->getDepartementId(),
-            'solde_conges' => $employe->getSoldeConges(),
         ]);
     }
 
@@ -70,8 +69,7 @@ class EmployeManager
     {
         $requete = $this->pdo->prepare(
             "UPDATE employe
-             SET nom = :nom, poste = :poste, email = :email, departement_id = :departement_id,
-                 solde_conges = :solde_conges
+             SET nom = :nom, poste = :poste, email = :email, departement_id = :departement_id
              WHERE id_employe = :id"
         );
 
@@ -80,7 +78,6 @@ class EmployeManager
             'poste' => $employe->getPoste(),
             'email' => $employe->getEmail(),
             'departement_id' => $employe->getDepartementId(),
-            'solde_conges' => $employe->getSoldeConges(),
             'id' => $employe->getId(),
         ]);
     }
@@ -99,7 +96,6 @@ class EmployeManager
             $ligne['poste'],
             $ligne['email'],
             (int) $ligne['departement_id'],
-            (int) $ligne['solde_conges'],
             (int) $ligne['id_employe']
         );
     }
