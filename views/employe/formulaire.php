@@ -1,4 +1,6 @@
 <?php
+// Formulaire utilise a la fois pour AJOUTER et pour MODIFIER un employe.
+// $employe n'existe (isset) que si on est en mode modification.
 /** @var Employe|null $employe */
 /** @var Departement[] $departements */
 
@@ -16,10 +18,12 @@ require __DIR__ . '/../partials/header.php';
     <input type="text" id="poste" name="poste" required
            value="<?= isset($employe) ? htmlspecialchars($employe->getPoste()) : '' ?>">
 
+    <!-- type="email" declenche une validation basique du navigateur (format d'email) -->
     <label for="email">Email</label>
     <input type="email" id="email" name="email" required
            value="<?= isset($employe) ? htmlspecialchars($employe->getEmail()) : '' ?>">
 
+    <!-- Menu deroulant rempli avec tous les departements existants -->
     <label for="departement_id">Département</label>
     <select id="departement_id" name="departement_id" required>
         <?php foreach ($departements as $departement): ?>

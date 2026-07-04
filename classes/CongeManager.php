@@ -3,6 +3,8 @@
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/Conge.php';
 
+// Classe gestionnaire : contient tout le CRUD pour la table "conge",
+// plus des methodes specifiques au metier (filtrer, valider, refuser).
 class CongeManager
 {
     private PDO $pdo;
@@ -12,6 +14,7 @@ class CongeManager
         $this->pdo = $database->getConnexion();
     }
 
+    // AJOUTER : insere une nouvelle demande de conge (statut 'en_attente' par defaut).
     public function ajouter(Conge $conge): bool
     {
         $requete = $this->pdo->prepare(
@@ -28,6 +31,7 @@ class CongeManager
         ]);
     }
 
+    // LISTER : recupere tous les conges, les plus recents (date_debut) en premier.
     public function lister(): array
     {
         $requete = $this->pdo->query("SELECT * FROM conge ORDER BY date_debut DESC");
@@ -35,6 +39,7 @@ class CongeManager
         return $this->hydraterTous($requete->fetchAll());
     }
 
+    // TROUVER PAR ID : recupere une seule demande de conge.
     public function trouverParId(int $id): ?Conge
     {
         $requete = $this->pdo->prepare("SELECT * FROM conge WHERE id_conge = :id");
@@ -44,6 +49,7 @@ class CongeManager
         return $ligne ? $this->hydrater($ligne) : null;
     }
 
+    // Recupere tous les conges d'UN employe en particulier (filtre par employe).
     public function listerParEmploye(int $employeId): array
     {
         $requete = $this->pdo->prepare(
@@ -54,6 +60,8 @@ class CongeManager
         return $this->hydraterTous($requete->fetchAll());
     }
 
+    // Recupere tous les conges ayant un statut precis (filtre par statut :
+    // 'en_attente', 'valide' ou 'refuse').
     public function listerParStatut(string $statut): array
     {
         $requete = $this->pdo->prepare(
@@ -64,6 +72,7 @@ class CongeManager
         return $this->hydraterTous($requete->fetchAll());
     }
 
+    // MODIFIER : met a jour toutes les informations d'une demande de conge existante.
     public function modifier(Conge $conge): bool
     {
         $requete = $this->pdo->prepare(
@@ -83,6 +92,8 @@ class CongeManager
         ]);
     }
 
+    // Change uniquement le statut d'un conge (utilise pour "Valider" ou "Refuser"
+    // sans avoir a renvoyer toutes les autres informations du conge).
     public function changerStatut(int $id, string $statut): bool
     {
         $requete = $this->pdo->prepare("UPDATE conge SET statut = :statut WHERE id_conge = :id");
@@ -90,6 +101,7 @@ class CongeManager
         return $requete->execute(['statut' => $statut, 'id' => $id]);
     }
 
+    // SUPPRIMER : supprime une demande de conge grace a son id.
     public function supprimer(int $id): bool
     {
         $requete = $this->pdo->prepare("DELETE FROM conge WHERE id_conge = :id");
@@ -97,6 +109,7 @@ class CongeManager
         return $requete->execute(['id' => $id]);
     }
 
+    // Transforme UNE ligne brute de la base en objet Conge.
     private function hydrater(array $ligne): Conge
     {
         return new Conge(
@@ -109,6 +122,8 @@ class CongeManager
         );
     }
 
+    // Transforme PLUSIEURS lignes brutes en un tableau d'objets Conge.
+    // Factorise le code commun a lister(), listerParEmploye() et listerParStatut().
     private function hydraterTous(array $lignes): array
     {
         $conges = [];

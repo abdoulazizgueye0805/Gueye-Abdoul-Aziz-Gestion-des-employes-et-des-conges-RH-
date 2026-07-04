@@ -1,13 +1,18 @@
 <?php
 
+// Classe entite : represente UN employe en memoire.
+// Comme pour Departement, elle ne contient aucune logique SQL : c'est EmployeManager qui s'en charge.
 class Employe
 {
-    private ?int $id;
-    private string $nom;
-    private string $poste;
-    private string $email;
-    private int $departementId;
+    // Tous les attributs sont prives (encapsulation) : on doit passer par les getters/setters.
+    private ?int $id;            // identifiant en base (null avant l'insertion)
+    private string $nom;         // nom de l'employe
+    private string $poste;       // poste occupe (ex : "Comptable")
+    private string $email;       // email de l'employe
+    private int $departementId;  // id du departement auquel il appartient (cle etrangere)
 
+    // Constructeur : nom, poste, email et departementId sont obligatoires.
+    // $id est optionnel car un nouvel employe n'a pas encore d'id avant l'insertion en base.
     public function __construct(
         string $nom,
         string $poste,
@@ -22,14 +27,11 @@ class Employe
         $this->id = $id;
     }
 
+    // --- Getters : lecture des attributs prives depuis l'exterieur ---
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
     }
 
     public function getNom(): string
@@ -37,19 +39,9 @@ class Employe
         return $this->nom;
     }
 
-    public function setNom(string $nom): void
-    {
-        $this->nom = $nom;
-    }
-
     public function getPoste(): string
     {
         return $this->poste;
-    }
-
-    public function setPoste(string $poste): void
-    {
-        $this->poste = $poste;
     }
 
     public function getEmail(): string
@@ -57,14 +49,31 @@ class Employe
         return $this->email;
     }
 
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
     public function getDepartementId(): int
     {
         return $this->departementId;
+    }
+
+    // --- Setters : modification controlee des attributs prives ---
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setNom(string $nom): void
+    {
+        $this->nom = $nom;
+    }
+
+    public function setPoste(string $poste): void
+    {
+        $this->poste = $poste;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
     }
 
     public function setDepartementId(int $departementId): void

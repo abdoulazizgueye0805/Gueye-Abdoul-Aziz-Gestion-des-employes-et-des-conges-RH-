@@ -1,14 +1,17 @@
 <?php
 
+// Classe entite : represente UNE demande de conge en memoire.
 class Conge
 {
-    private ?int $id;
-    private int $employeId;
-    private string $type;
-    private string $dateDebut;
-    private string $dateFin;
-    private string $statut;
+    private ?int $id;          // identifiant en base (null avant l'insertion)
+    private int $employeId;    // id de l'employe concerne (cle etrangere)
+    private string $type;      // type de conge (ex : "Congé payé", "Congé maladie"...)
+    private string $dateDebut; // date de debut du conge (format AAAA-MM-JJ)
+    private string $dateFin;   // date de fin du conge
+    private string $statut;    // 'en_attente', 'valide' ou 'refuse'
 
+    // Constructeur : le statut vaut 'en_attente' par defaut, car une nouvelle demande
+    // de conge est toujours en attente de decision au moment de sa creation.
     public function __construct(
         int $employeId,
         string $type,
@@ -25,14 +28,11 @@ class Conge
         $this->id = $id;
     }
 
+    // --- Getters ---
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
     }
 
     public function getEmployeId(): int
@@ -40,19 +40,9 @@ class Conge
         return $this->employeId;
     }
 
-    public function setEmployeId(int $employeId): void
-    {
-        $this->employeId = $employeId;
-    }
-
     public function getType(): string
     {
         return $this->type;
-    }
-
-    public function setType(string $type): void
-    {
-        $this->type = $type;
     }
 
     public function getDateDebut(): string
@@ -60,24 +50,41 @@ class Conge
         return $this->dateDebut;
     }
 
-    public function setDateDebut(string $dateDebut): void
-    {
-        $this->dateDebut = $dateDebut;
-    }
-
     public function getDateFin(): string
     {
         return $this->dateFin;
     }
 
-    public function setDateFin(string $dateFin): void
-    {
-        $this->dateFin = $dateFin;
-    }
-
     public function getStatut(): string
     {
         return $this->statut;
+    }
+
+    // --- Setters ---
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setEmployeId(int $employeId): void
+    {
+        $this->employeId = $employeId;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+
+    public function setDateDebut(string $dateDebut): void
+    {
+        $this->dateDebut = $dateDebut;
+    }
+
+    public function setDateFin(string $dateFin): void
+    {
+        $this->dateFin = $dateFin;
     }
 
     public function setStatut(string $statut): void
