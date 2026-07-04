@@ -12,6 +12,7 @@
         <h1>Gestion des employés et des congés</h1>
         <nav>
             <a href="index.php?module=departement&action=liste">Départements</a>
+            <a href="index.php?module=employe&action=liste">Employés</a>
         </nav>
     </header>
     <main>

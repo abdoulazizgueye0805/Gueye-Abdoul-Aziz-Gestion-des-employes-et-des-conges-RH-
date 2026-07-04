@@ -3,9 +3,12 @@
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../classes/Departement.php';
 require_once __DIR__ . '/../classes/DepartementManager.php';
+require_once __DIR__ . '/../classes/Employe.php';
+require_once __DIR__ . '/../classes/EmployeManager.php';
 
 $database = new Database();
 $departementManager = new DepartementManager($database);
+$employeManager = new EmployeManager($database);
 
 $module = $_GET['module'] ?? 'departement';
 $action = $_GET['action'] ?? 'liste';
@@ -46,6 +49,63 @@ if ($module === 'departement') {
         default:
             $departements = $departementManager->lister();
             require __DIR__ . '/../views/departement/liste.php';
+            break;
+    }
+}
+
+if ($module === 'employe') {
+    $departements = $departementManager->lister();
+
+    switch ($action) {
+        case 'ajouter':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $employe = new Employe(
+                    $_POST['nom'],
+                    $_POST['poste'],
+                    $_POST['email'],
+                    (int) $_POST['departement_id']
+                );
+                $employeManager->ajouter($employe);
+                header('Location: index.php?module=employe&action=liste');
+                exit;
+            }
+            require __DIR__ . '/../views/employe/formulaire.php';
+            break;
+
+        case 'modifier':
+            $id = (int) $_GET['id'];
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $employe = new Employe(
+                    $_POST['nom'],
+                    $_POST['poste'],
+                    $_POST['email'],
+                    (int) $_POST['departement_id'],
+                    $id
+                );
+                $employeManager->modifier($employe);
+                header('Location: index.php?module=employe&action=liste');
+                exit;
+            }
+
+            $employe = $employeManager->trouverParId($id);
+            require __DIR__ . '/../views/employe/formulaire.php';
+            break;
+
+        case 'supprimer':
+            $id = (int) $_GET['id'];
+            $employeManager->supprimer($id);
+            header('Location: index.php?module=employe&action=liste');
+            exit;
+
+        case 'liste':
+        default:
+            $employes = $employeManager->lister();
+            $departementsParId = [];
+            foreach ($departements as $departement) {
+                $departementsParId[$departement->getId()] = $departement->getNom();
+            }
+            require __DIR__ . '/../views/employe/liste.php';
             break;
     }
 }
