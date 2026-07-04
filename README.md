@@ -10,7 +10,7 @@ Une entreprise souhaite gérer ses employés (nom, poste, département, email) e
 
 - [x] Connexion à la base de données via une classe `Database` (PDO)
 - [ ] Gestion des employés (ajouter, lister, modifier, supprimer)
-- [ ] Gestion des départements (ajouter, lister, modifier, supprimer)
+- [x] Gestion des départements (ajouter, lister, modifier, supprimer)
 - [ ] Soumission d'une demande de congé
 - [ ] Validation ou refus d'un congé
 - [ ] Liste des congés par employé ou par statut
