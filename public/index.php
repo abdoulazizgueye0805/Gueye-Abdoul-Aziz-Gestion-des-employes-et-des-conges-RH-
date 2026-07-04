@@ -5,10 +5,13 @@ require_once __DIR__ . '/../classes/Departement.php';
 require_once __DIR__ . '/../classes/DepartementManager.php';
 require_once __DIR__ . '/../classes/Employe.php';
 require_once __DIR__ . '/../classes/EmployeManager.php';
+require_once __DIR__ . '/../classes/Conge.php';
+require_once __DIR__ . '/../classes/CongeManager.php';
 
 $database = new Database();
 $departementManager = new DepartementManager($database);
 $employeManager = new EmployeManager($database);
+$congeManager = new CongeManager($database);
 
 $module = $_GET['module'] ?? 'departement';
 $action = $_GET['action'] ?? 'liste';
@@ -106,6 +109,83 @@ if ($module === 'employe') {
                 $departementsParId[$departement->getId()] = $departement->getNom();
             }
             require __DIR__ . '/../views/employe/liste.php';
+            break;
+    }
+}
+
+if ($module === 'conge') {
+    $employes = $employeManager->lister();
+
+    switch ($action) {
+        case 'ajouter':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $conge = new Conge(
+                    (int) $_POST['employe_id'],
+                    $_POST['type'],
+                    $_POST['date_debut'],
+                    $_POST['date_fin']
+                );
+                $congeManager->ajouter($conge);
+                header('Location: index.php?module=conge&action=liste');
+                exit;
+            }
+            require __DIR__ . '/../views/conge/formulaire.php';
+            break;
+
+        case 'modifier':
+            $id = (int) $_GET['id'];
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $conge = $congeManager->trouverParId($id);
+                $conge->setEmployeId((int) $_POST['employe_id']);
+                $conge->setType($_POST['type']);
+                $conge->setDateDebut($_POST['date_debut']);
+                $conge->setDateFin($_POST['date_fin']);
+                $congeManager->modifier($conge);
+                header('Location: index.php?module=conge&action=liste');
+                exit;
+            }
+
+            $conge = $congeManager->trouverParId($id);
+            require __DIR__ . '/../views/conge/formulaire.php';
+            break;
+
+        case 'valider':
+            $congeManager->changerStatut((int) $_GET['id'], 'valide');
+            header('Location: index.php?module=conge&action=liste');
+            exit;
+
+        case 'refuser':
+            $congeManager->changerStatut((int) $_GET['id'], 'refuse');
+            header('Location: index.php?module=conge&action=liste');
+            exit;
+
+        case 'supprimer':
+            $congeManager->supprimer((int) $_GET['id']);
+            header('Location: index.php?module=conge&action=liste');
+            exit;
+
+        case 'liste':
+        default:
+            $filtreStatut = $_GET['statut'] ?? '';
+            $filtreEmployeId = isset($_GET['employe_id']) && $_GET['employe_id'] !== ''
+                ? (int) $_GET['employe_id']
+                : '';
+
+            if ($filtreEmployeId !== '') {
+                $conges = $congeManager->listerParEmploye($filtreEmployeId);
+            } elseif ($filtreStatut !== '') {
+                $conges = $congeManager->listerParStatut($filtreStatut);
+            } else {
+                $conges = $congeManager->lister();
+            }
+
+            $employesParId = [];
+            foreach ($employes as $employe) {
+                $employesParId[$employe->getId()] = $employe->getNom();
+            }
+
+            require __DIR__ . '/../views/conge/liste.php';
             break;
     }
 }

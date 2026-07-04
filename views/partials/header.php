@@ -13,6 +13,7 @@
         <nav>
             <a href="index.php?module=departement&action=liste">Départements</a>
             <a href="index.php?module=employe&action=liste">Employés</a>
+            <a href="index.php?module=conge&action=liste">Congés</a>
         </nav>
     </header>
     <main>
