@@ -1,4 +1,12 @@
-<?php require __DIR__ . '/../partials/header.php'; ?>
+<?php
+/** @var Conge[] $conges */
+/** @var Employe[] $employes */
+/** @var array<int, string> $employesParId */
+/** @var string $filtreStatut */
+/** @var int|string $filtreEmployeId */
+
+require __DIR__ . '/../partials/header.php';
+?>
 
 <h2>Congés</h2>
 

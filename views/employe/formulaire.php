@@ -1,4 +1,9 @@
-<?php require __DIR__ . '/../partials/header.php'; ?>
+<?php
+/** @var Employe|null $employe */
+/** @var Departement[] $departements */
+
+require __DIR__ . '/../partials/header.php';
+?>
 
 <h2><?= isset($employe) ? 'Modifier l\'employé' : 'Ajouter un employé' ?></h2>
 

@@ -1,4 +1,8 @@
-<?php require __DIR__ . '/../partials/header.php'; ?>
+<?php
+/** @var Departement|null $departement */
+
+require __DIR__ . '/../partials/header.php';
+?>
 
 <h2><?= isset($departement) ? 'Modifier le département' : 'Ajouter un département' ?></h2>
 

@@ -1,4 +1,8 @@
-<?php require __DIR__ . '/../partials/header.php'; ?>
+<?php
+/** @var Departement[] $departements */
+
+require __DIR__ . '/../partials/header.php';
+?>
 
 <h2>Départements</h2>
 

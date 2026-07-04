@@ -1,4 +1,12 @@
-<?php require __DIR__ . '/../partials/header.php'; ?>
+<?php
+/** @var Conge|null $conge */
+/** @var Employe[] $employes */
+/** @var string $formAction */
+/** @var bool $estModification */
+/** @var string|null $erreur */
+
+require __DIR__ . '/../partials/header.php';
+?>
 
 <h2><?= $estModification ? 'Modifier la demande de congé' : 'Soumettre une demande de congé' ?></h2>
 

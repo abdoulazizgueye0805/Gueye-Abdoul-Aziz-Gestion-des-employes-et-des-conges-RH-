@@ -1,4 +1,10 @@
-<?php require __DIR__ . '/../partials/header.php'; ?>
+<?php
+/** @var Employe[] $employes */
+/** @var array<int, string> $departementsParId */
+/** @var string $termeRecherche */
+
+require __DIR__ . '/../partials/header.php';
+?>
 
 <h2>Employés</h2>
 
