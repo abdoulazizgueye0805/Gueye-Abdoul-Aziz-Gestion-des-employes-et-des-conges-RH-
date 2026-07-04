@@ -39,6 +39,23 @@ class EmployeManager
         return $employes;
     }
 
+    public function rechercher(string $terme): array
+    {
+        $requete = $this->pdo->prepare(
+            "SELECT * FROM employe
+             WHERE nom LIKE :terme OR poste LIKE :terme OR email LIKE :terme
+             ORDER BY nom"
+        );
+        $requete->execute(['terme' => '%' . $terme . '%']);
+
+        $employes = [];
+        foreach ($requete->fetchAll() as $ligne) {
+            $employes[] = $this->hydrater($ligne);
+        }
+
+        return $employes;
+    }
+
     public function trouverParId(int $id): ?Employe
     {
         $requete = $this->pdo->prepare("SELECT * FROM employe WHERE id_employe = :id");

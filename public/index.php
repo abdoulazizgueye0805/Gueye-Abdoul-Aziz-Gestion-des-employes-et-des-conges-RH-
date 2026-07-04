@@ -118,7 +118,11 @@ if ($module === 'employe') {
 
         case 'liste':
         default:
-            $employes = $employeManager->lister();
+            $termeRecherche = trim($_GET['q'] ?? '');
+            $employes = $termeRecherche !== ''
+                ? $employeManager->rechercher($termeRecherche)
+                : $employeManager->lister();
+
             $departementsParId = [];
             foreach ($departements as $departement) {
                 $departementsParId[$departement->getId()] = $departement->getNom();

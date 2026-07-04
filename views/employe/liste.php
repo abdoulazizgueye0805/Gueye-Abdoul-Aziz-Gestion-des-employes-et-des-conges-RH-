@@ -4,6 +4,22 @@
 
 <a class="btn" href="index.php?module=employe&action=ajouter">+ Ajouter un employé</a>
 
+<form method="get" action="index.php" style="display:flex; gap:12px; align-items:end; max-width:none; margin-top:16px;">
+    <input type="hidden" name="module" value="employe">
+    <input type="hidden" name="action" value="liste">
+
+    <div style="flex:1;">
+        <label for="q">Rechercher (nom, poste ou email)</label>
+        <input type="text" id="q" name="q" value="<?= htmlspecialchars($termeRecherche) ?>"
+               placeholder="Ex : Diop, Comptable...">
+    </div>
+
+    <button class="btn" type="submit" style="margin-bottom:16px;">Rechercher</button>
+    <?php if ($termeRecherche !== ''): ?>
+    <a class="btn btn-danger" style="margin-bottom:16px;" href="index.php?module=employe&action=liste">Effacer</a>
+    <?php endif; ?>
+</form>
+
 <table>
     <thead>
         <tr>

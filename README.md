@@ -14,7 +14,7 @@ Une entreprise souhaite gérer ses employés (nom, poste, département, email) e
 - [x] Soumission d'une demande de congé
 - [x] Validation ou refus d'un congé
 - [x] Liste des congés par employé ou par statut
-- [ ] Recherche
+- [x] Recherche (employés, par nom, poste ou email)
 
 ## Modèle de données
 
