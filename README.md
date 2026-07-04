@@ -27,12 +27,12 @@ Relations : un département a plusieurs employés, un employé a plusieurs cong�
 ## Structure du projet
 
 ```
-config/Database.php     -> classe de connexion PDO
-classes/                -> classes entités (Employe, Departement, Conge) et gestionnaires (Managers)
-views/                  -> pages d'affichage (formulaires, listes)
-public/index.php        -> point d'entrée de l'application
-sql/script.sql          -> script de création de la base de données
-assets/css/style.css    -> style personnalisé
+config/Database.php          -> classe de connexion PDO
+classes/                     -> classes entités (Employe, Departement, Conge) et gestionnaires (Managers)
+views/                       -> pages d'affichage (formulaires, listes)
+public/index.php             -> point d'entrée de l'application
+public/assets/css/style.css  -> style personnalisé (servi par le serveur web)
+sql/script.sql                -> script de création de la base de données
 ```
 
 ## Prérequis
